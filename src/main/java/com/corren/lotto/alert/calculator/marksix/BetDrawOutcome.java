@@ -17,16 +17,19 @@ public class BetDrawOutcome {
     private Double odds;
 
     // 止损点
-    private BigDecimal stopLoss;
+    private Long stopLoss;
 
     // 起始下注额
-    private BigDecimal minBetAmount;
+    private Long minBetAmount;
 
     // 下注方式
     private BetType betType;
 
+    // 下注阈值
+    private Integer valve;
+
     // 盈利额
-    private BigDecimal profits;
+    private Long profits;
 
     // 备注
     private String remark;

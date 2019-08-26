@@ -1,6 +1,7 @@
 package com.corren.lotto.alert.calculator.marksix;
 
 import com.alibaba.fastjson.JSON;
+import com.corren.lotto.alert.enumeration.BetType;
 
 import java.util.*;
 
@@ -67,7 +68,7 @@ public class RandomDrawGenerator {
 
     public static void main(String[] args) {
 
-        // simulate ten million draws 模拟一千万组开奖
+        // simulate ten million draws 模拟一百万组开奖
         List<Integer[]> results = simulateDraws(1000000);
 
         // count and collect the extremes 收集极值
@@ -75,6 +76,11 @@ public class RandomDrawGenerator {
 
         // output the outcome 输出结果
         System.out.println(JSON.toJSON(collector));
+
+
+        final LottoNumberExtremeCollector target = collector.getCollectors().get(6);
+
+        System.out.println(JSON.toJSON(BetDrawCalculator.doBet(target, 1.96, 510L, 2L, BetType.DOUBLE, 14)));
 
     }
 
