@@ -4,7 +4,9 @@ import com.corren.lotto.alert.enumeration.BetType;
 import lombok.Data;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author ZhangGR
@@ -67,8 +69,11 @@ public class BetDrawCalculator {
             outcome.setRemark("没有频谱表，无法计算");
         }
 
+
+
         // 遍历频谱表
-        final Long profit = frequencyMap.entrySet().stream().map(s -> {
+        final BigDecimal profits = frequencyMap.entrySet().stream().map(s -> {
+
             final Long extremeCount = s.getKey();
             final Long times = s.getValue();
 
@@ -83,27 +88,39 @@ public class BetDrawCalculator {
 
                 Long cost = sum(2L, lastBet, 2L);
 
-                if (cost > stopLoss) {
-                    return stopLoss * (-1) * times; // 这里大致按照止损点计算，实际可能小于止损点就停止下注
+                if (cost >= stopLoss) {
+
+                    return BigDecimal.valueOf(stopLoss * (-1) * times); // 这里大致按照止损点计算，实际可能小于止损点就停止下注
+
                 } else {
                     // 计算盈利
                     Double bonus = lastBet * odds;
-                    Long bonusLong = bonus.longValue();
-                    return (bonusLong - cost) * times;
+
+                    return BigDecimal.valueOf((bonus - cost) * times);
                 }
 
             } else { // 否则没有下注
-                return 0L;
+                return BigDecimal.ZERO;
             }
-        }).reduce((a, b) -> (a + b)).get();
+        }).reduce((a, b) -> (a.add(b))).get();
 
-        if (profit > 0) {
+        if (profits.compareTo(BigDecimal.ZERO) > 0) {
             outcome.setRemark("有利可图");
+        } else if (profits.compareTo(BigDecimal.ZERO) == 0){
+            outcome.setRemark("没下注");
         } else {
             outcome.setRemark("亏");
         }
 
-        outcome.setProfits(profit);
+        final Optional<Long> reduce = frequencyMap.entrySet().stream().filter(s -> s.getKey() > valve).map(s -> s.getValue()).reduce((a, b) -> a + b);
+        Long betTimes = 0L;
+        if (reduce.isPresent()) {
+           betTimes = reduce.get();
+        }
+
+        final BigDecimal last = profits.setScale(2, BigDecimal.ROUND_HALF_UP);
+        outcome.setProfits(last);
+        outcome.setBetTimes(betTimes);
 
         return outcome;
     }
@@ -118,5 +135,4 @@ public class BetDrawCalculator {
     private static Long sum(Long start, Long end, Long ratio) {
        return (start - end * ratio) / (1 - ratio);
     }
-
 }

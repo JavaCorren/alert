@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.corren.lotto.alert.enumeration.BetType;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author ZhangGR
@@ -77,11 +78,10 @@ public class RandomDrawGenerator {
         // output the outcome 输出结果
         System.out.println(JSON.toJSON(collector));
 
+        final List<BetDrawOutcome> collect = collector.getCollectors().stream().map(s -> BetDrawCalculator.doBet(s, 1.96, 5100L, 2L, BetType.DOUBLE, 19)).collect(Collectors.toList());
 
-        final LottoNumberExtremeCollector target = collector.getCollectors().get(6);
-
-        System.out.println(JSON.toJSON(BetDrawCalculator.doBet(target, 1.96, 510L, 2L, BetType.DOUBLE, 14)));
-
+        System.out.println(JSON.toJSON(collect));
+        System.out.println("total profit : "+ collect.stream().map(s -> s.getProfits()).reduce((a,b) -> a.add(b)).get());
     }
 
 }

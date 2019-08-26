@@ -29,8 +29,11 @@ public class BetDrawOutcome {
     private Integer valve;
 
     // 盈利额
-    private Long profits;
+    private BigDecimal profits;
 
     // 备注
     private String remark;
+
+    // 下注次数
+    private Long betTimes;
 }
