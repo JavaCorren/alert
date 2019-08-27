@@ -2,6 +2,7 @@ package com.corren.lotto.alert.calculator.marksix;
 
 import com.corren.lotto.alert.enumeration.BetType;
 import lombok.Data;
+import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
@@ -46,30 +47,42 @@ public class BetDrawCalculator {
 
         if (null == betType) {
             outcome.setRemark("未指定下注方式");
+            outcome.setSuccess(false);
         }
 
         if (odds <= 1) {
             outcome.setRemark("赔率不能不大于1");
+            outcome.setSuccess(false);
         }
 
         if (null == minBetAmount || minBetAmount.intValue() < 2) {
             outcome.setRemark("最小下注金额不正确");
+            outcome.setSuccess(false);
         }
 
         if (null == stopLoss || stopLoss.intValue() <= minBetAmount.intValue()) {
             outcome.setRemark("止损点设置不正确");
+            outcome.setSuccess(false);
         }
 
         if (null == valve || valve < 1) {
             outcome.setRemark("阈值设置错误");
+            outcome.setSuccess(false);
         }
 
         final Map<Long, Long> frequencyMap = lottoNumberExtremeCollector.getFrequencyMap();
         if (CollectionUtils.isEmpty(frequencyMap)) {
             outcome.setRemark("没有频谱表，无法计算");
+            outcome.setSuccess(false);
         }
 
+        if (null == outcome.getSuccess()) {
+            outcome.setSuccess(true);
+        }
 
+        if (BooleanUtils.isFalse(outcome.getSuccess())) {
+            return outcome;
+        }
 
         // 遍历频谱表
         final BigDecimal profits = frequencyMap.entrySet().stream().map(s -> {

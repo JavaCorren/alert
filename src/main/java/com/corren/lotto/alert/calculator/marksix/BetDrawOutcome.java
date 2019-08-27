@@ -36,4 +36,6 @@ public class BetDrawOutcome {
 
     // 下注次数
     private Long betTimes;
+
+    private Boolean success;
 }
