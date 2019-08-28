@@ -46,7 +46,7 @@ public class BetStrategy {
 
         BetStrategy strategy = new BetStrategy();
 
-        strategy.setFixedReturnRate(1.24);
+        strategy.setFixedReturnRate(0.24);
         strategy.setStartAmount(BigDecimal.valueOf(2));
         strategy.setStopLoss(BigDecimal.valueOf(7000));
         strategy.setOdds(1.96);
@@ -154,6 +154,7 @@ public class BetStrategy {
         outcome.setCost(cost);
         outcome.setProfit(profit);
         outcome.setRebate(rebate);
+        outcome.setBonus(bonus);
         outcome.setBetTimes(times);
 
         return outcome;

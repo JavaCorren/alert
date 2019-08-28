@@ -24,6 +24,9 @@ public class BetOutcome {
     // 返水
     private BigDecimal rebate;
 
+    // 派彩
+    private BigDecimal bonus;
+
     // 是否爆
     private Boolean over;
 }

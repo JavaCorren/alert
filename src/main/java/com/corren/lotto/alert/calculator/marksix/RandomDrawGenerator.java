@@ -1,10 +1,10 @@
 package com.corren.lotto.alert.calculator.marksix;
 
 import com.alibaba.fastjson.JSON;
-import com.corren.lotto.alert.enumeration.BetType;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * @author ZhangGR
