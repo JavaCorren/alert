@@ -29,4 +29,6 @@ public class BetOutcome {
 
     // 是否爆
     private Boolean over;
+
+    private LottoNumberExtremeCollector extremeCollector;
 }

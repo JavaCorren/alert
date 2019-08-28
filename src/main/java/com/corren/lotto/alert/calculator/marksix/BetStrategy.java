@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -47,10 +48,10 @@ public class BetStrategy {
         BetStrategy strategy = new BetStrategy();
 
         strategy.setFixedReturnRate(0.24);
-        strategy.setStartAmount(BigDecimal.valueOf(2));
-        strategy.setStopLoss(BigDecimal.valueOf(7000));
+        strategy.setStartAmount(BigDecimal.valueOf(100));
+        strategy.setStopLoss(BigDecimal.valueOf(10000));
         strategy.setOdds(1.96);
-        strategy.setValve(16L);
+        strategy.setValve(22L);
         strategy.setRebateRate(0.01);
         strategy.setStrict(true);
 
@@ -65,7 +66,13 @@ public class BetStrategy {
 
         else {
             return frequencyMap.entrySet().stream()
-                    .map(s -> frequencyBetAnalyzer.apply(s))
+                    .map(s -> {
+                        final BetOutcome apply = frequencyBetAnalyzer.apply(s);
+                        if (null != apply) {
+                            apply.setExtremeCollector(lottoNumberExtremeCollector);
+                            return apply;
+                        } else return apply;
+                    })
                     .filter(s -> null != s)
                     .collect(Collectors.toList());
         }
@@ -114,7 +121,7 @@ public class BetStrategy {
                                 BigDecimal.ONE.add(BigDecimal.valueOf(fixedReturnRate))
                         ).
                         divide(
-                                BigDecimal.valueOf(odds).subtract(BigDecimal.ONE).subtract(BigDecimal.valueOf(fixedReturnRate))
+                                BigDecimal.valueOf(odds).subtract(BigDecimal.ONE).subtract(BigDecimal.valueOf(fixedReturnRate)), RoundingMode.HALF_UP
                         ).setScale(0, BigDecimal.ROUND_HALF_UP);
 
                 // 判断本期加注后是否超止损点
@@ -146,10 +153,15 @@ public class BetStrategy {
                 bet = BigDecimal.ZERO;
             }
 
-            bonus = bet.multiply(BigDecimal.valueOf(odds)).setScale(2, BigDecimal.ROUND_HALF_UP);
+            final Long repeats = entry.getValue();
+
+            cost = cost.multiply(BigDecimal.valueOf(repeats));
+            bonus = bet.multiply(BigDecimal.valueOf(odds)).multiply(BigDecimal.valueOf(repeats)).setScale(2, BigDecimal.ROUND_HALF_UP);
             rebate = cost.multiply(BigDecimal.valueOf(rebateRate)).setScale(0, BigDecimal.ROUND_HALF_UP);
             profit = bonus.subtract(cost);
+            times = times * repeats;
         }
+
 
         outcome.setCost(cost);
         outcome.setProfit(profit);

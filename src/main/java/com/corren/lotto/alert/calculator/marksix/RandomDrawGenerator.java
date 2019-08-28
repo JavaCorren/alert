@@ -1,10 +1,14 @@
 package com.corren.lotto.alert.calculator.marksix;
 
 import com.alibaba.fastjson.JSON;
+import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author ZhangGR
@@ -67,23 +71,60 @@ public class RandomDrawGenerator {
         return results;
     }
 
-    public static void main(String[] args) {
 
-        // simulate ten million draws 模拟一百万组开奖
-        List<Integer[]> results = simulateDraws(1000000);
 
-        // count and collect the extremes 收集极值
-        LottoExtremeCollector collector = LottoExtremeCollector.doCollect(results);
+    public static void main(String[] args) throws InterruptedException {
 
-        // output the outcome 输出结果
-        System.out.println(JSON.toJSON(collector));
+        List<BetOutcome> resultList = new ArrayList<>();
+        final List<BetOutcome> synchronizedList = Collections.synchronizedList(resultList);
 
-        LottoNumberExtremeCollector lottoNumberExtremeCollector = collector.getCollectors().get(6);
+        ExecutorService executorService = Executors.newFixedThreadPool(8);
 
-        BetStrategy strategy = BetStrategy.normalStrategy();
-        List<BetOutcome> betOutcomes = strategy.doBet(lottoNumberExtremeCollector);
+        for (int i = 1; i <= 300; i++) {
 
-        System.out.println(JSON.toJSON(betOutcomes));
+//             往线程池提交任务
+            executorService.submit(() -> {
+
+                // simulate ten million draws 模拟一百万组开奖
+                List<Integer[]> results = simulateDraws(7000000);
+
+                // count and collect the extremes 收集极值
+                LottoExtremeCollector collector = LottoExtremeCollector.doCollect(results);
+
+                List<LottoNumberExtremeCollector> collectors = collector.getCollectors();
+                BetStrategy strategy = BetStrategy.normalStrategy();
+
+                for (int j = 0; j <7; j++) {
+
+                    final LottoNumberExtremeCollector numberExtremeCollector = collectors.get(j);
+                    List<BetOutcome> betOutcomes = strategy.doBet(numberExtremeCollector);
+
+                    synchronizedList.addAll(betOutcomes);
+                }
+
+                System.out.println(String.format("子线程%s任务执行完毕", Thread.currentThread().getName()));
+            });
+
+            System.out.println(String.format("主线程第%s个任务提交完毕", i));
+        }
+
+        executorService.shutdown();
+
+        while(true) {
+            if (executorService.isTerminated()) {
+
+                if (CollectionUtils.isEmpty(synchronizedList)) {
+                    System.out.println("没有下注机会");
+                    Thread.sleep(500);
+                    break;
+                }
+
+                final BigDecimal profits = synchronizedList.stream().map(s -> s.getProfit()).reduce((a, b) -> a.add(b)).get();
+                System.out.println(JSON.toJSON(synchronizedList));
+                System.out.println(String.format("10年出现极值的总盈利: %s", profits));
+                Thread.sleep(500);
+                break;
+            }
+        }
     }
-
 }
