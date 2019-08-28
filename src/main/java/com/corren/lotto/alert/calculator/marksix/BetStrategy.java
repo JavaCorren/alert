@@ -1,6 +1,5 @@
 package com.corren.lotto.alert.calculator.marksix;
 
-import com.alibaba.fastjson.serializer.BigDecimalCodec;
 import lombok.Data;
 import org.springframework.util.CollectionUtils;
 
@@ -148,7 +147,7 @@ public class BetStrategy {
             }
 
             bonus = bet.multiply(BigDecimal.valueOf(odds)).setScale(2, BigDecimal.ROUND_HALF_UP);
-            rebate = cost.multiply(cost).setScale(0, BigDecimal.ROUND_HALF_UP);
+            rebate = cost.multiply(BigDecimal.valueOf(rebateRate)).setScale(0, BigDecimal.ROUND_HALF_UP);
             profit = bonus.subtract(cost);
         }
 
