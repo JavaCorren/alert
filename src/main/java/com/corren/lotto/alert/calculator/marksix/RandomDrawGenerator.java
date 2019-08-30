@@ -4,9 +4,10 @@ import com.alibaba.fastjson.JSON;
 import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -78,15 +79,15 @@ public class RandomDrawGenerator {
         List<BetOutcome> resultList = new ArrayList<>();
         final List<BetOutcome> synchronizedList = Collections.synchronizedList(resultList);
 
-        ExecutorService executorService = Executors.newFixedThreadPool(8);
+        ExecutorService executorService = Executors.newFixedThreadPool(5);
 
-        for (int i = 1; i <= 300; i++) {
+        for (int i = 1; i <= 100; i++) {
 
 //             往线程池提交任务
             executorService.submit(() -> {
 
                 // simulate ten million draws 模拟一百万组开奖
-                List<Integer[]> results = simulateDraws(7000000);
+                List<Integer[]> results = simulateDraws(1000000);
 
                 // count and collect the extremes 收集极值
                 LottoExtremeCollector collector = LottoExtremeCollector.doCollect(results);

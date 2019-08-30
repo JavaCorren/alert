@@ -1,47 +1,45 @@
-
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
-    <link rel="stylesheet" href="../static/lib/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
-<!--    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">-->
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="../static/lib/dist/js/jquery-2.1.4.min.js"></script>
-    <script src="../static/lib/dist/js/bootstrap.min.js"></script>
-
-    <![endif]-->
-    <link rel="stylesheet" href="../static/lib/dist/css/index.css"/>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="static/lib/dist/css/bootstrap.min.css"/>
 </head>
 
+<style>
+    .progress-container {
+        margin-top: 10px;
+    }
+
+    .form-group-left {
+        float: left;
+    }
+
+    .form-group-right {
+        float: right;
+    }
+</style>
 <body>
-<div class="container">
-    <div class="row clearfix">
-        <div class="col-md-12 column">
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12">
             <div class="page-header">
-                <h1>
-                    Lotto Extreme Alert <span>a system that puts weight on your wallet</span>
-                </h1>
+                <h2>
+                    <em><em>Lotto Extreme Statistics</em></em>
+                </h2>
             </div>
             <ul class="nav nav-tabs">
                 <li class="active">
                     <a href="#">Overview</a>
                 </li>
                 <li>
-                    <a href="#">Track Extreme</a>
+                    <a href="#">Lottery</a>
                 </li>
                 <li class="disabled">
-                    <a href="#">Bet History</a>
+                    <a href="#">Statistics</a>
                 </li>
                 <li class="dropdown pull-right">
-                    <a href="#" data-toggle="dropdown" class="dropdown-toggle">下拉<strong class="caret"></strong></a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">下拉</a>
                     <ul class="dropdown-menu">
                         <li>
                             <a href="#">操作</a>
@@ -60,83 +58,150 @@
                     </ul>
                 </li>
             </ul>
+
+            <div class="progress-container">
+
+                <div class="page-header">
+                    <h1>Extreme Top List <small> make your fortunes here</small></h1>
+                </div>
+
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                        <span class="progress-text">40% Complete (success)</span>
+                    </div>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
+                        <span class="progress-text">20% Complete</span>
+                    </div>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
+                        <span class="progress-text">60% Complete (warning)</span>
+                    </div>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
+                        <span class="progress-text">80% Complete (danger)</span>
+                    </div>
+                </div>
+            </div>
+
+            <hr/>
+
+            <div>
+                <form class="form-inline">
+                    <div class="form-group form-group-left">
+                        <label for="OddsInput">Odds</label>
+                        <input type="text" class="form-control" id="OddsInput" placeholder="1.96">
+                        <input class="btn btn-default" type="button" value="-" onclick="alert(1)">
+                        <input class="btn btn-default" type="button" value="+" onclick="alert(2)">
+                    </div>
+                    <div class="form-group form-group-right">
+                        <label for="ExpectancyInput">Expectancy</label>
+                        <input type="text" class="form-control" id="ExpectancyInput" placeholder="10%">
+                        <input class="btn btn-default" type="button" value="-">
+                        <input class="btn btn-default" type="button" value="+">
+                    </div>
+                </form>
+                <table class="table table-bordered">
+                    <caption>Suggested Bet Plan List</caption>
+                    <thead>
+                    <tr>
+                        <th>Sequence</th>
+                        <th>Bet</th>
+                        <th>Cost</th>
+                        <th>Expectancy</th>
+                        <th>Odds</th>
+                        <th>Bonus</th>
+                        <th>Profit</th>
+                        <th>Return Rate</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Bangalore</td>
+                        <td>560001</td>
+                        <td>1</td>
+                        <td>1.96</td>
+                        <td>Bangalore</td>
+                        <td>560001</td>
+                        <td>560001</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Mumbai</td>
+                        <td>400003</td>
+                        <td>1</td>
+                        <td>1.96</td>
+                        <td>Bangalore</td>
+                        <td>560001</td>
+                        <td>560001</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Pune</td>
+                        <td>411027</td>
+                        <td>1</td>
+                        <td>1.96</td>
+                        <td>Bangalore</td>
+                        <td>560001</td>
+                        <td>560001</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-
-    <div class="col-md-4 column">
-        <ul class="nav nav-pills btn-circle">
-            <li class="active">
-                <a href="#"> <span class="badge pull-right">42</span> Home</a>
-            </li>
-        </ul>
-    </div>
-
-    <div class="col-md-4 column">
-        <ul class="nav nav-pills btn-circle">
-            <li class="active">
-                <a href="#"> <span class="badge pull-right">42</span> Home</a>
-            </li>
-        </ul>
-    </div>
-
-    <div class="col-md-4 column">
-        <ul class="nav nav-pills btn-circle">
-            <li class="active">
-                <a href="#"> <span class="badge pull-right">42</span> Home</a>
-            </li>
-        </ul>
-    </div>
-
-    <div class="col-md-4 column">
-        <ul class="nav nav-pills btn-circle">
-            <li class="active">
-                <a href="#"> <span class="badge pull-right">42</span> Home</a>
-            </li>
-        </ul>
-    </div>
-
-    <div class="col-md-4 column">
-        <ul class="nav nav-pills btn-circle">
-            <li class="active">
-                <a href="#"> <span class="badge pull-right">42</span> Home</a>
-            </li>
-        </ul>
-    </div>
-
-    <div class="col-md-4 column">
-        <ul class="nav nav-pills btn-circle">
-            <li class="active">
-                <a href="#"> <span class="badge pull-right">42</span> Home</a>
-            </li>
-        </ul>
-    </div>
-
-    <div class="col-md-4 column">
-        <ul class="nav nav-pills btn-circle">
-            <li class="active">
-                <a href="#"> <span class="badge pull-right">42</span> Home</a>
-            </li>
-        </ul>
-    </div>
-
-    <div class="col-md-4 column">
-        <ul class="nav nav-pills btn-circle">
-            <li class="active">
-                <a href="#"> <span class="badge pull-right">42</span> Home</a>
-            </li>
-        </ul>
-    </div>
-
-    <div class="col-md-4 column">
-        <ul class="nav nav-pills btn-circle">
-            <li class="active">
-                <a href="#"> <span class="badge pull-right">42</span> Home</a>
-            </li>
-        </ul>
-    </div>
 </div>
+<script src="static/lib/dist/jquery.js"></script>
+<script src="static/lib/dist/js/bootstrap.min.js"></script>
+<script>
+    ;(function() {
+        button_event();
+    })();
 
+    function button_event() {
+        console.log($('.btn.btn-default'));
+    }
 
+    function sync_progress() {
+
+        $('.progress-text').each(function () {
+            let text = $(this).text();
+            let num = text.split("%")[0];
+            num ++;
+            if (num > 100) {
+                num = 0;
+            }
+
+            if (num >= 80) {
+                $(this).parent().css({'transition':'all .1s linear'});
+                $(this).parent().attr('class','progress-bar progress-bar-danger progress-bar-striped active');
+                $(this).text(num + '% Complete (DANGER)');
+            } else if (num >= 60 && num < 80) {
+                $(this).parent().css({'transition':'all .1s linear'});
+                $(this).parent().attr('class','progress-bar progress-bar-warning progress-bar-striped active');
+                $(this).text(num + '% Complete (WARNING)');
+            } else if (num >= 40 && num < 60) {
+                $(this).parent().css({'transition':'all .1s linear'});
+                $(this).parent().attr('class','progress-bar progress-bar-info progress-bar-striped active');
+                $(this).text(num + '% Complete (WATCHING)');
+            } else if (num >= 20 && num < 40) {
+                $(this).parent().css({'transition':'all .1s linear'});
+                $(this).parent().attr('class','progress-bar progress-bar-success progress-bar-striped active');
+                $(this).text(num + '% Complete (PEACE)');
+            } else {
+                $(this).parent().css({'transition':'all .1s linear'});
+                $(this).parent().attr('class','progress-bar progress-bar-success active');
+                $(this).text(num + '% Complete (NORMAL)');
+            }
+
+            $(this).parent().css({'width':num+'%'});
+        });
+    }
+</script>
 </body>
-
 </html>
