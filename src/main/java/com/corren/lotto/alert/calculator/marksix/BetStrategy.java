@@ -51,7 +51,7 @@ public class BetStrategy {
         strategy.setStartAmount(BigDecimal.valueOf(100));
         strategy.setStopLoss(BigDecimal.valueOf(10000));
         strategy.setOdds(1.96);
-        strategy.setValve(22L);
+        strategy.setValve(16L);
         strategy.setRebateRate(0.01);
         strategy.setStrict(true);
 

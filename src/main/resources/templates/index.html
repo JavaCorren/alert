@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="static/lib/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="static/lib/dist/css/bootstrap-table.min.css"/>
+    <script src="static/lib/jq/jquery-2.1.4.min.js"></script>
+    <script src="static/lib/dist/js/bootstrap.min.js"></script>
+    <script src="static/lib/dist/js/bootstrap-table.min.js"></script>
 </head>
 
 <style>
@@ -11,53 +15,28 @@
         margin-top: 10px;
     }
 
-    .form-group-left {
-        float: left;
+    .form-inline {
+        display: flex;
+        justify-content: space-around;
     }
 
-    .form-group-right {
-        float: right;
+    #bet_plan_table {
+        position: relative;
     }
+
+    .btn-calculate {
+        margin: 5px 0;
+    }
+
+    .data-prepared {
+        display: none;
+    }
+
 </style>
 <body>
 <div class="container-fluid">
     <div class="row-fluid">
         <div class="span12">
-            <div class="page-header">
-                <h2>
-                    <em><em>Lotto Extreme Statistics</em></em>
-                </h2>
-            </div>
-            <ul class="nav nav-tabs">
-                <li class="active">
-                    <a href="#">Overview</a>
-                </li>
-                <li>
-                    <a href="#">Lottery</a>
-                </li>
-                <li class="disabled">
-                    <a href="#">Statistics</a>
-                </li>
-                <li class="dropdown pull-right">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">下拉</a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="#">操作</a>
-                        </li>
-                        <li>
-                            <a href="#">设置栏目</a>
-                        </li>
-                        <li>
-                            <a href="#">更多设置</a>
-                        </li>
-                        <li class="divider">
-                        </li>
-                        <li>
-                            <a href="#">分割线</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
 
             <div class="progress-container">
 
@@ -85,6 +64,7 @@
                         <span class="progress-text">80% Complete (danger)</span>
                     </div>
                 </div>
+
             </div>
 
             <hr/>
@@ -93,85 +73,344 @@
                 <form class="form-inline">
                     <div class="form-group form-group-left">
                         <label for="OddsInput">Odds</label>
-                        <input type="text" class="form-control" id="OddsInput" placeholder="1.96">
-                        <input class="btn btn-default" type="button" value="-" onclick="alert(1)">
-                        <input class="btn btn-default" type="button" value="+" onclick="alert(2)">
+                        <input type="text" class="form-control" id="oddsInput" placeholder="1.96" value="1.96">
+                        <input class="btn btn-default btn-data-normal" type="button" value="-" >
+                        <input class="btn btn-default btn-data-normal" type="button" value="+" >
                     </div>
+
+                    <div class="form-group form-group-left">
+                        <label for="OddsInput">Initial Amount</label>
+                        <input type="text" class="form-control" id="initialAmount" placeholder="5" value="5">
+                        <input class="btn btn-default btn-data-normal" type="button" value="-" >
+                        <input class="btn btn-default btn-data-normal" type="button" value="+" >
+                    </div>
+
+                    <div class="form-group form-group-left">
+                        <label for="OddsInput">StopLoss Amount</label>
+                        <input type="text" class="form-control" id="stopLoss" placeholder="5000" value="5000">
+                        <input class="btn btn-default btn-data-normal" type="button" value="-" >
+                        <input class="btn btn-default btn-data-normal" type="button" value="+" >
+                    </div>
+
                     <div class="form-group form-group-right">
                         <label for="ExpectancyInput">Expectancy</label>
-                        <input type="text" class="form-control" id="ExpectancyInput" placeholder="10%">
-                        <input class="btn btn-default" type="button" value="-">
-                        <input class="btn btn-default" type="button" value="+">
+                        <input type="text" class="form-control" id="expectancyInput" placeholder="10%" value="10%">
+                        <input class="btn btn-default btn-data-percentage" type="button" value="-">
+                        <input class="btn btn-default btn-data-percentage" type="button" value="+">
                     </div>
                 </form>
-                <table class="table table-bordered">
-                    <caption>Suggested Bet Plan List</caption>
-                    <thead>
-                    <tr>
-                        <th>Sequence</th>
-                        <th>Bet</th>
-                        <th>Cost</th>
-                        <th>Expectancy</th>
-                        <th>Odds</th>
-                        <th>Bonus</th>
-                        <th>Profit</th>
-                        <th>Return Rate</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Bangalore</td>
-                        <td>560001</td>
-                        <td>1</td>
-                        <td>1.96</td>
-                        <td>Bangalore</td>
-                        <td>560001</td>
-                        <td>560001</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Mumbai</td>
-                        <td>400003</td>
-                        <td>1</td>
-                        <td>1.96</td>
-                        <td>Bangalore</td>
-                        <td>560001</td>
-                        <td>560001</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Pune</td>
-                        <td>411027</td>
-                        <td>1</td>
-                        <td>1.96</td>
-                        <td>Bangalore</td>
-                        <td>560001</td>
-                        <td>560001</td>
-                    </tr>
 
-                    </tbody>
+                <button type="button" class="btn btn-primary btn-calculate">calculate</button>
+                <button type="button" class="btn btn-primary btn-refresh">refresh</button>
+
+                <table id= "bet_plan_table" class="table table-bordered table-hover">
+                    <caption class="table-cation">Suggested Bet Plan List</caption>
+                    <!--                    <thead>-->
+                    <!--                    <tr>-->
+                    <!--                        <th>Sequence</th>-->
+                    <!--                        <th>Bet</th>-->
+                    <!--                        <th>Cost</th>-->
+                    <!--                        <th>Bonus</th>-->
+                    <!--                        <th>Profit</th>-->
+                    <!--                        <th>Return Rate</th>-->
+                    <!--                    </tr>-->
+                    <!--                    </thead>-->
+                    <!--                    <tbody>-->
+                    <!--                    </tbody>-->
+
                 </table>
             </div>
         </div>
     </div>
 </div>
-<script src="static/lib/dist/jquery.js"></script>
-<script src="static/lib/dist/js/bootstrap.min.js"></script>
+
 <script>
     ;(function() {
         button_event();
     })();
 
     function button_event() {
-        console.log($('.btn.btn-default'));
+
+        // 为减号按钮绑定事件
+        $('.btn.btn-default.btn-data-normal').click(function () {
+            var val = $(this).val();
+            var $input_box = $(this).parent().find("input[type='text']");
+
+            var value = $input_box.val();
+            if (isNaN(value)) alert("Please input a valid number");
+
+            if (val == '-') {
+                value -= 0.01;
+
+            }
+            if (val == '+') {
+                value *= 1;
+                value += 0.01;
+            }
+
+            if (value < 1 ) value = 1.00;
+            value = value.toFixed(2);
+
+            $input_box.val(value);
+
+        });
+
+        // 为加号按钮绑定事件
+        $('.btn.btn-default.btn-data-percentage').click(function () {
+            var val = $(this).val();
+            var $input_box = $(this).parent().find("input[type='text']");
+
+            var value = $input_box.val();
+            if (!value.endsWith('%')) alert("Please input a valid number");
+
+            value = value.split("%")[0];
+
+            if (val == '-') value -= 1;
+            if (val == '+') {
+                value *= 1;
+                value += 1;
+            }
+
+            if (value < 1 ) value = 1;
+            value = value.toFixed(0);
+            $input_box.val(value + '%');
+
+        });
+
+        // 计算按钮
+        $('.btn-calculate').click(function () {
+
+            // // 获取计算数据
+            var planData = get_plan_data();
+            //
+            // // 组装并展示
+            // $("#bet_plan_table tbody").html(construct_tr_list(planData));
+            // $("#bet_plan_table .plan-data-tr").fadeIn(1500);
+
+
+            show_in_table(planData);
+
+        });
+
+        // 刷新按钮
+        $('.btn-refresh').click(function() {
+
+            var planData = get_plan_data();
+            show_in_table(planData);
+
+            // $('#bet_plan_table').bootstrapTable({
+            //     hideLoading: true,
+            //     sidePagination: 'server',
+            //     striped: true,
+            //
+            //     columns: [
+            //         {
+            //             checkbox: true
+            //         },
+            //         {
+            //             field: 'sequence',
+            //             title: 'Sequence'
+            //         }, {
+            //             field: 'bet',
+            //             title: 'Bet'
+            //         }, {
+            //             field: 'cost',
+            //             title: 'Cost'
+            //         }, {
+            //             field: 'bonus',
+            //             title: 'Bonus'
+            //         }, {
+            //             field: 'profit',
+            //             title: 'Profit'
+            //         }, {
+            //             field: 'return_rate',
+            //             title: 'Return rate'
+            //         }],
+            //     data: [{
+            //         "sequence":1,
+            //         "bet":5,
+            //         "cost":5,
+            //         "bonus": 5*1.96,
+            //         "profit": 5*1.96-5,
+            //         "return_rate": '25%'
+            //     }, {
+            //         "sequence":1,
+            //         "bet":5,
+            //         "cost":5,
+            //         "bonus": 5*1.96,
+            //         "profit": 5*1.96-5,
+            //         "return_rate": '25%'
+            //     }, {
+            //         "sequence":1,
+            //         "bet":5,
+            //         "cost":5,
+            //         "bonus": 5*1.96,
+            //         "profit": 5*1.96-5,
+            //         "return_rate": '25%'
+            //     }, {
+            //         "sequence":1,
+            //         "bet":5,
+            //         "cost":5,
+            //         "bonus": 5*1.96,
+            //         "profit": 5*1.96-5,
+            //         "return_rate": '25%'
+            //     },{
+            //         "sequence":1,
+            //         "bet":5,
+            //         "cost":5,
+            //         "bonus": 5*1.96,
+            //         "profit": 5*1.96-5,
+            //         "return_rate": '25%'
+            //     },{
+            //         "sequence":1,
+            //         "bet":5,
+            //         "cost":5,
+            //         "bonus": 5*1.96,
+            //         "profit": 5*1.96-5,
+            //         "return_rate": '25%'
+            //     }]
+            // });
+        });
     }
+
+
+    function show_in_table(data) {
+
+        // 在初始化table之前，要将table销毁，否则会保留上次加载的内容
+        $('#bet_plan_table').bootstrapTable('destroy');
+        $('#bet_plan_table').bootstrapTable({
+            classes: 'table-striped',
+            clickToSelect: true,
+            singleSelect: true,
+            columns: [
+                {
+                    checkbox: true
+                },
+                {
+                    field: 'sequence',
+                    title: 'Sequence'
+                }, {
+                    field: 'bet',
+                    title: 'Bet'
+                }, {
+                    field: 'cost',
+                    title: 'Cost'
+                }, {
+                    field: 'bonus',
+                    title: 'Bonus'
+                }, {
+                    field: 'profit',
+                    title: 'Profit'
+                }, {
+                    field: 'return_rate',
+                    title: 'Return rate'
+                }],
+            data: data,
+            class: 'data-prepared'
+        });
+    }
+
+
+    function get_plan_data() {
+
+        // 获取四个初始的计算变量
+        var oddsInput = $('#oddsInput').val();
+        var initialAmount = $('#initialAmount').val();
+        var stopLoss = $('#stopLoss').val();
+        var expectancyInput = ($('#expectancyInput').val().split('%')[0]/100).toFixed(2);
+
+        if (oddsInput == 0 || initialAmount == 0 || stopLoss == 0 || expectancyInput == '0%') {
+            return [];
+        }
+
+        // 创建结果对象
+        var plan_list = [];
+
+        // 用一个变量记录总成本
+        var plan_cost = 0;
+        var sequence = 0;
+
+        do {
+            var plan_data = {};
+
+            plan_data.expectancy = expectancyInput;
+            plan_data.stoploss = stopLoss;
+            sequence ++;
+
+            if (plan_cost == 0) {
+
+                plan_data.bet = initialAmount*1;
+                plan_cost += plan_data.bet*1;
+                plan_data.cost = plan_data.bet;
+
+            } else {
+                plan_data.bet = (plan_cost * (1 + expectancyInput*1) / (oddsInput - 1 - expectancyInput)).toFixed(0);
+
+                if (plan_data.bet < initialAmount*1)  plan_data.bet = initialAmount*1;
+                plan_cost += plan_data.bet * 1;
+                plan_data.cost = plan_cost;
+            }
+
+            plan_data.bonus = (plan_data.bet * oddsInput).toFixed(2);
+            plan_data.profit = (plan_data.bonus - plan_data.cost).toFixed(2)*1;
+            plan_data.return_rate = (plan_data.profit *100 / plan_data.cost).toFixed(2);
+            plan_data.sequence = sequence;
+
+            plan_list.push(plan_data);
+        } while (plan_cost < stopLoss);
+
+        return plan_list;
+    }
+
+    // 为原生String对象创建格式化方法
+    String.prototype.format = function() {
+        if(arguments.length == 0) return this;
+        var obj = arguments[0];
+        var s = this;
+        for(var key in obj) {
+            s = s.replace(new RegExp("\\{\\{" + key + "\\}\\}", "g"), obj[key]);
+        }
+        return s;
+    };
+
+
+    // --------- 自定义原生类StringBuffer（内部用数组来装每行数据，toString的时候对每行字符串join操作） ------------
+    function StringBuffer() {
+        this.__strings__ = new Array;
+    }
+
+    StringBuffer.prototype.append = function (str) {
+        this.__strings__.push(str);
+    };
+
+    StringBuffer.prototype.toString = function () {
+
+        return this.__strings__.join("");
+    };
+
+
+
+    // 构造tr template
+    function construct_tr_list(data) {
+
+        var stringBuffer = new StringBuffer();
+
+        if (!data || data.length == 0) {return '';}
+
+        for (var i = 0; i < data.length; i++) {
+            stringBuffer.append("<tr style='display: none' class='plan-data-tr'><td>{{sequence}}</td><td>{{bet}}</td><td>{{cost}}</td><td>{{bonus}}</td><td>{{profit}}</td><td>{{return_rate}}%</td></tr>".format(data[i]));
+        }
+
+        return  stringBuffer.toString();
+    }
+
 
     function sync_progress() {
 
         $('.progress-text').each(function () {
-            let text = $(this).text();
-            let num = text.split("%")[0];
+            var text = $(this
+            ).text();
+            var num = text.split("%")[0];
             num ++;
             if (num > 100) {
                 num = 0;

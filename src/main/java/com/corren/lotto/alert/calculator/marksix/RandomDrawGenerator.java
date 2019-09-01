@@ -81,13 +81,13 @@ public class RandomDrawGenerator {
 
         ExecutorService executorService = Executors.newFixedThreadPool(5);
 
-        for (int i = 1; i <= 100; i++) {
+        for (int i = 1; i <= 365; i++) {
 
 //             往线程池提交任务
             executorService.submit(() -> {
 
                 // simulate ten million draws 模拟一百万组开奖
-                List<Integer[]> results = simulateDraws(1000000);
+                List<Integer[]> results = simulateDraws(179);
 
                 // count and collect the extremes 收集极值
                 LottoExtremeCollector collector = LottoExtremeCollector.doCollect(results);
