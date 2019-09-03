@@ -16,4 +16,9 @@ public class HelloController {
         return "index";
     }
 
+    @GetMapping("/error")
+    public String error() {
+        throw new NullPointerException();
+    }
+
 }
