@@ -1,5 +1,7 @@
 package com.corren.lotto.alert.service;
 
+import com.corren.lotto.alert.enumeration.LottoNature;
+
 /**
  * @author ZhangGR
  * created on 2019/9/1
@@ -7,5 +9,5 @@ package com.corren.lotto.alert.service;
  **/
 public interface DrawService {
 
-    Integer[] draw();
+    Integer[] draw(LottoNature nature);
 }
