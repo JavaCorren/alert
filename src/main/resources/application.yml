@@ -23,6 +23,10 @@ retrofit:
   endpoints:
   - identity: data-api
     baseUrl: http://api.caipiaokong.com/
+  log:
+    enabled: true
+    content: BODY # NONE, BASIC, HEADERS, BODY
+    level: INFO
 
 lottofetish:
   uid: 922421
