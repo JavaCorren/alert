@@ -6,9 +6,7 @@ import com.corren.lotto.alert.enumeration.Lottery;
 import com.corren.lotto.alert.enumeration.LottoNature;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * @author ZhangGR
@@ -36,6 +34,7 @@ public class DefaultDrawService implements DrawService{
 
         do {
 
+
             // 抽取随机号位
             int index = random.nextInt(maximumCandidateNumber - minimumCandidateNumber + 1);
 
@@ -58,8 +57,8 @@ public class DefaultDrawService implements DrawService{
     public static void main(String[] args) {
         DrawService drawService = new DefaultDrawService();
         List<Integer[]> resultList = new ArrayList<>();
-        for (int i = 0; i < 179 * 365; i++) {
-            resultList.add(drawService.draw(LottoNature.MARK_SIX));
+        for (int i = 0; i < 44 * 365 * 100; i++) {
+            resultList.add(drawService.draw(LottoNature.BEIJING_PK10));
         }
 
         DecimalFormat decimalFormat = new DecimalFormat("00");
@@ -75,12 +74,12 @@ public class DefaultDrawService implements DrawService{
             System.out.println(stringBuilder.toString());
         });
 
-        int count = LottoNature.MARK_SIX.getDrawnNumberCount();
+        int count = LottoNature.BEIJING_PK10.getDrawnNumberCount();
 
         List<ExtremeCollector> collectorList = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
-            ExtremeCollector collector = new ExtremeCollector(Lottery.MARK_SIX, i);
+            ExtremeCollector collector = new ExtremeCollector(Lottery.BEIJING_PK10, i);
             collectorList.add(collector);
         }
 
@@ -91,6 +90,24 @@ public class DefaultDrawService implements DrawService{
             }
         }
 
-        System.out.println(JSON.toJSON(collectorList));
+        Map<Integer, Integer> sumMap = new HashMap<>();
+        for (ExtremeCollector collector : collectorList) {
+            Map<String, Map<Integer, Integer>> frequencyExtremeMap = collector.getFrequencyExtremeMap();
+            for (Map.Entry<String, Map<Integer, Integer>> entry : frequencyExtremeMap.entrySet()) {
+                Map<Integer, Integer> entryValue = entry.getValue();
+                for (Map.Entry<Integer, Integer> subEntry : entryValue.entrySet()) {
+                    Integer value = sumMap.get(subEntry.getKey());
+                    if (value == null) {
+                        sumMap.put(subEntry.getKey(), subEntry.getValue());
+                    } else {
+                        Integer addon = subEntry.getValue();
+                        value += addon;
+                        sumMap.put(subEntry.getKey(), value);
+                    }
+                }
+            }
+        }
+
+        System.out.println(JSON.toJSON(sumMap));
     }
 }

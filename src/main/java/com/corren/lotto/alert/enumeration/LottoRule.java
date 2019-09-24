@@ -17,6 +17,9 @@ public enum LottoRule {
     DRAGON_TIGER,
 
     // 随意龙虎
-    RANDOM_DRAGON_TIGER
+    RANDOM_DRAGON_TIGER,
+
+    // 连开
+    REPEAT_DRAWN_COUNT
 
 }

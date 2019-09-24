@@ -122,7 +122,7 @@ public class RandomDrawGenerator {
 
                 final BigDecimal profits = synchronizedList.stream().map(s -> s.getProfit()).reduce((a, b) -> a.add(b)).get();
                 System.out.println(JSON.toJSON(synchronizedList));
-                System.out.println(String.format("10年出现极值的总盈利: %s", profits));
+                System.out.println(String.format("1年出现极值的总盈利: %s", profits));
                 Thread.sleep(500);
                 break;
             }
