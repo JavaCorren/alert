@@ -60,6 +60,7 @@ public class TwoFaceMeasureService implements MeasureService{
                     break;
                 case DRAGON_TIGER:
                 case RANDOM_DRAGON_TIGER:
+                case REPEAT_DRAWN_COUNT:
             }
         }
     }
@@ -83,6 +84,7 @@ public class TwoFaceMeasureService implements MeasureService{
                     break;
                 case DRAGON_TIGER:
                 case RANDOM_DRAGON_TIGER:
+                case REPEAT_DRAWN_COUNT:
             }
         }
     }
