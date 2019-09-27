@@ -1,3 +1,5 @@
+
+
 spring:
   thymeleaf:
     mode: HTML
@@ -32,4 +34,5 @@ lottofetish:
   uid: 922421
   token: ff2b5d0a13160f1367de26394e618a633df232b4
   format: json
-
+server:
+  port: 8580

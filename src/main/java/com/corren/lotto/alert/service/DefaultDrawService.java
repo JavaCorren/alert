@@ -57,7 +57,7 @@ public class DefaultDrawService implements DrawService{
     public static void main(String[] args) {
         DrawService drawService = new DefaultDrawService();
         List<Integer[]> resultList = new ArrayList<>();
-        for (int i = 0; i < 44 * 365 * 100; i++) {
+        for (int i = 0; i < 1000000; i++) {
             resultList.add(drawService.draw(LottoNature.BEIJING_PK10));
         }
 
@@ -90,24 +90,6 @@ public class DefaultDrawService implements DrawService{
             }
         }
 
-        Map<Integer, Integer> sumMap = new HashMap<>();
-        for (ExtremeCollector collector : collectorList) {
-            Map<String, Map<Integer, Integer>> frequencyExtremeMap = collector.getFrequencyExtremeMap();
-            for (Map.Entry<String, Map<Integer, Integer>> entry : frequencyExtremeMap.entrySet()) {
-                Map<Integer, Integer> entryValue = entry.getValue();
-                for (Map.Entry<Integer, Integer> subEntry : entryValue.entrySet()) {
-                    Integer value = sumMap.get(subEntry.getKey());
-                    if (value == null) {
-                        sumMap.put(subEntry.getKey(), subEntry.getValue());
-                    } else {
-                        Integer addon = subEntry.getValue();
-                        value += addon;
-                        sumMap.put(subEntry.getKey(), value);
-                    }
-                }
-            }
-        }
-
-        System.out.println(JSON.toJSON(sumMap));
+        System.out.println(JSON.toJSON(collectorList));
     }
 }

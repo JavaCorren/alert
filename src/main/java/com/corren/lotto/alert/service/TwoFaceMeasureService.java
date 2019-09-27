@@ -6,13 +6,14 @@ import com.corren.lotto.alert.enumeration.LottoNature;
 import com.corren.lotto.alert.enumeration.LottoRule;
 import com.corren.lotto.alert.util.LargeSmallMeasureUtil;
 import com.corren.lotto.alert.util.OddEvenMeasureUtil;
+import com.corren.lotto.alert.util.RepeatDrawCountUtil;
 
 import java.util.Map;
 
 /**
  * @author ZhangGR
  * @create on 2019-09-02
- * @description 双面极值度量服务抽象类
+ * @description 双面极值度量服务实现类
  */
 public class TwoFaceMeasureService implements MeasureService{
 
@@ -30,7 +31,7 @@ public class TwoFaceMeasureService implements MeasureService{
         updateFrequencyMap(rules, realTimeExtremeMap, frequencyExtremeMap, target, lastTarget, nature);
 
         // 双面极值近期频度更新
-        updateRealTimeMap(rules, realTimeExtremeMap, target, nature);
+        updateRealTimeMap(rules, realTimeExtremeMap, target, nature, lastTarget);
 
         // 统计结束后将对应位置的上期球号更新
         extremeCollector.setLastTarget(target);
@@ -61,6 +62,8 @@ public class TwoFaceMeasureService implements MeasureService{
                 case DRAGON_TIGER:
                 case RANDOM_DRAGON_TIGER:
                 case REPEAT_DRAWN_COUNT:
+                    RepeatDrawCountUtil.measureExtremeFrequency(target, lastTarget, frequencyExtremeMap, realTimeExtremeMap);
+                    break;
             }
         }
     }
@@ -72,7 +75,7 @@ public class TwoFaceMeasureService implements MeasureService{
      * @param target
      * @param nature
      */
-    private void updateRealTimeMap(LottoRule[] rules, Map<String, Integer> realTimeExtremeMap, int target, LottoNature nature) {
+    private void updateRealTimeMap(LottoRule[] rules, Map<String, Integer> realTimeExtremeMap, int target, LottoNature nature, Integer lastTarget) {
 
         for (LottoRule rule : rules) {
             switch (rule) {
@@ -85,6 +88,8 @@ public class TwoFaceMeasureService implements MeasureService{
                 case DRAGON_TIGER:
                 case RANDOM_DRAGON_TIGER:
                 case REPEAT_DRAWN_COUNT:
+                    RepeatDrawCountUtil.measureRealTimeExtremeFrequency(target, lastTarget, realTimeExtremeMap);
+                    break;
             }
         }
     }
